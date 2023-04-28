@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  postgres:
+    image: docker.io/postgres
+    environment:
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - ./pgdata:/data/postgres
+      - ./user_data:/user_data
+    ports:
+      - "5432:5432"
