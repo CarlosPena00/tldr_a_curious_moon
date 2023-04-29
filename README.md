@@ -22,15 +22,37 @@ sh scripts/10_psql.sh
 sh scripts/10_psql.sh <<< 'select 1;'
 sh scripts/10_psql.sh < my_sql.sql
 ```
+---
+
+## Transit
+
+- Respect the ETL (extract, transform, load)
+
+- Before a `create` must have a `drop * if exists [cascade]`
+
+- Create a schema just for importing the data with text type
+
+- Put everything in an idempotent script
+  
+## In Orbit
+
+- Create lookup tables: reduce repetitions and could speedup search. A new table with all distinct values from the given coloumn (of the import.* table), with a primary key (that will be used as foreign key)
+
+- Date in Postgres is stored as a UTC
+- TIMESTAMPT: values in UTC
+- TIMESTAMPTZ: converts TIMESTAMP values (UTC) to the client's session time zone 
+  
+- make clean && make
+
+## Flyby
+
+- A query is `Sargeable`(Search ARGument ABLE) if it can take advantage of an index to speed up the execution of the query
+- Avoid `LIKE %*` as it is `non-sargable`
+- `ILIKE` is case-insensitive
+  
 
 ---
 
-```
-make clean && make
-```
+[^1]: Data From: https://dados.gov.br/dados/conjuntos-dados/destinacoes-de-mercadorias-apreendidas
 
----
-
-[^1]: I would like to thank to [Giovanni](https://giovannipcarvalho.github.io/2023/04/03/postgresql-and-psql-in-docker.html) for the psql script.
-
-[^2]: Data From: https://dados.gov.br/dados/conjuntos-dados/destinacoes-de-mercadorias-apreendidas
+[^2]: I would like to thank to [Giovanni](https://giovannipcarvalho.github.io/2023/04/03/postgresql-and-psql-in-docker.html) for the psql script.
