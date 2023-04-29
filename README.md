@@ -49,7 +49,16 @@ sh scripts/10_psql.sh < my_sql.sql
 - A query is `Sargeable`(Search ARGument ABLE) if it can take advantage of an index to speed up the execution of the query
 - Avoid `LIKE %*` as it is `non-sargable`
 - `ILIKE` is case-insensitive
-  
+
+## A Bent Field
+
+- Create a view to make querying easier (and drop if exists)
+- \x: toggle expanded display (table vs record by record)
+- \H: change output to html layout
+- \o file_name: change output to a file
+- Full-text indexing: `to_tsvector(my_text_column)` and `search @@ to_tsquery('my_search_query')`
+- GIN: Generalized Inverted Index (key, posting list)
+- Materialized View: a view does not store data, a `Materialized View` is stored in disk (and so, allowed to create an index). Once the original data is updated, it is necessary to update the materialized view: `REFRESH MATERIALIZED VIEW my_view_name`
 
 ---
 
