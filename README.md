@@ -75,6 +75,51 @@ with count_events as (select count(*) from events),
 select * from count_events, count_regions;
 ```
 
+## Ring Dust
+- PostgreSQL support the following languages: PL/pgSQL, PL/Tcl, PL/Perl, and PL/Python.
+
+```sql
+drop function if exists my_function(arguments_types);
+create function my_function (arguments)
+returns return_datatype
+IMMUTABLE -- if pure function (no side effects, same input same output)
+as $$
+   declare
+      ...
+   begin
+      ...
+      return my_return_value
+   end;
+$$ language sql;
+```
+Or similar to the one presented in the book
+
+```sql
+drop function if exists max_price_per_region(int);
+create function max_price_per_region(rid int, out numeric)
+as $$
+    select max(price) from events where events.region_id=rid
+    -- implicity return the first row of this select
+$$ language sql;
+```
+
+To other languages, such as python, it is necessary to run `CREATE LANGUAGE [plpython3u]` that requires installing python itself along with Postgres.
+
+- Window function: similar to aggregation without gruping rows `count(1) over (partition by ...)` (you may want to add `distinct` in after the `select`)
+
+as example, the percentage of entries per year with max/min price per year.
+
+```sql
+select distinct
+    year,
+    round(100.0 * (count(1) over (partition by year)::numeric
+            / (count(1) over())::numeric), 2) as percentage_of_entries,
+    (max(price) over (partition by year)::numeric
+            / (count(1) over())::numeric) as max_price,
+    (min(price) over (partition by year)::numeric
+            / (count(1) over())::numeric) as min_price
+from events;
+```
 ---
 
 [^1]: Data From: https://dados.gov.br/dados/conjuntos-dados/destinacoes-de-mercadorias-apreendidas
