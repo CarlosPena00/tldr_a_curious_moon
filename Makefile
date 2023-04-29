@@ -2,7 +2,7 @@ DB=gov_br
 BUILD=sql/build.sql
 CSV='/user_data/cigarros.csv'
 MASTER=sql/import.sql
-NORMALIZE=sql/normalize.sql 
+NORMALIZE=sql/normalize.sql
 
 all: normalize
 	sh scripts/10_psql.sh <  $(BUILD)

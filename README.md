@@ -10,8 +10,8 @@ In this repository we will use docker-compose to run a local postgres instance, 
 
 ```bash
 docker compose up --remove-orphans [-d]
-# or 
-sh scripts/00_start.sh 
+# or
+sh scripts/00_start.sh
 ```
 
 To use the psql CLI[^2]:
@@ -33,15 +33,15 @@ sh scripts/10_psql.sh < my_sql.sql
 - Create a schema just for importing the data with text type
 
 - Put everything in an idempotent script
-  
+
 ## In Orbit
 
 - Create lookup tables: reduce repetitions and could speedup search. A new table with all distinct values from the given coloumn (of the import.* table), with a primary key (that will be used as foreign key)
 
 - Date in Postgres is stored as a UTC
 - TIMESTAMPT: values in UTC
-- TIMESTAMPTZ: converts TIMESTAMP values (UTC) to the client's session time zone 
-  
+- TIMESTAMPTZ: converts TIMESTAMP values (UTC) to the client's session time zone
+
 - make clean && make
 
 ## Flyby

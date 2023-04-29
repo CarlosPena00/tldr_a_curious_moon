@@ -9,7 +9,7 @@ from
 alter table regions add id serial primary key;
 
 -- convert functions
-drop function if exists br_month_to_int(text); 
+drop function if exists br_month_to_int(text);
 create function br_month_to_int(month text)
 RETURNS int
 IMMUTABLE
@@ -46,14 +46,12 @@ create table
     );
 
 insert into events(year, month, rf, region_id, price)
-select 
+select
     cigar.year::int,
     br_month_to_int(cigar.month),
     cigar.rf,
     regions.id,
     replace(cigar.price, ',', '.')::numeric
 from import.cigarettes cigar
-left join regions 
+left join regions
     on cigar.region = regions.description;
-
-
