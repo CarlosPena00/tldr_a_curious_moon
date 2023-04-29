@@ -27,21 +27,16 @@ sh scripts/10_psql.sh < my_sql.sql
 ## Transit
 
 - Respect the ETL (extract, transform, load)
-
 - Before a `create` must have a `drop * if exists [cascade]`
-
 - Create a schema just for importing the data with text type
-
 - Put everything in an idempotent script
 
 ## In Orbit
 
 - Create lookup tables: reduce repetitions and could speedup search. A new table with all distinct values from the given coloumn (of the import.* table), with a primary key (that will be used as foreign key)
-
 - Date in Postgres is stored as a UTC
 - TIMESTAMPT: values in UTC
 - TIMESTAMPTZ: converts TIMESTAMP values (UTC) to the client's session time zone
-
 - make clean && make
 
 ## Flyby
@@ -59,6 +54,26 @@ sh scripts/10_psql.sh < my_sql.sql
 - Full-text indexing: `to_tsvector(my_text_column)` and `search @@ to_tsquery('my_search_query')`
 - GIN: Generalized Inverted Index (key, posting list)
 - Materialized View: a view does not store data, a `Materialized View` is stored in disk (and so, allowed to create an index). Once the original data is updated, it is necessary to update the materialized view: `REFRESH MATERIALIZED VIEW my_view_name`
+
+## Sniff The Sky
+
+- Don't burn yourself out
+- Count how many files follow the pattern: `ls */*.txt | wc -l`
+- [csvkit](https://csvkit.readthedocs.io/en/latest/): command-line tools for converting to and working with CSV, such as:
+  - in2csv: convert * to CSV
+  - csvcut -n: print column names
+  - csvsql: import into PostgreSQL (remember to replace varchar to text)
+
+> csvsql my_csv_path -i postgresql --tables "import.my_name" --noconstraints –overwrite | sed 's/VARCHAR/text/g' > import.sql
+
+- Using `cut` command to retrieve the desired columns: `cut -d ';' -f 1-2,4-6  user_data/cigarros.csv`
+- CTE (Common Table Expression): `with temp_table_name as ( select ...), other_name as (select ... where temp_table_name.x = 2) select * from other_name`
+
+```sql
+with count_events as (select count(*) from events),
+     count_regions as (select count(*) from regions)
+select * from count_events, count_regions;
+```
 
 ---
 
