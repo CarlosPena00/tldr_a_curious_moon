@@ -1,6 +1,6 @@
 # My TL;DR Of A Curious Moon
 
-The idea of the repository is to have a streamlined version of the teachings I had per chapter, focused on the Postgres itself. I found it interesting to change the database to avoid a simple copy/paste by myself. I chose a public dataset from the Brazilian government regarding confiscated cigarettes (and destroyed)[^1], that I may (or may not) change in the future.
+The idea of the repository is to have a streamlined version of the teachings I had per chapter[^1], focused on the Postgres itself. I found it interesting to change the database to avoid a simple copy/paste by myself. I chose a public dataset from the Brazilian government regarding confiscated cigarettes (and destroyed)[^2], that I may (or may not) change in the future.
 
 > [A Curious Moon by Rob Conery](https://bigmachine.io/products/a-curious-moon/)
 
@@ -14,7 +14,7 @@ docker compose up --remove-orphans [-d]
 sh scripts/00_start.sh
 ```
 
-To use the psql CLI[^2]:
+To use the psql CLI[^3]:
 
 ```bash
 sh scripts/10_psql.sh
@@ -120,8 +120,18 @@ select distinct
             / (count(1) over())::numeric) as min_price
 from events;
 ```
+
+## A Tight Ship
+
+- Chapter dedicated to explaining 'why to choose postgres'
+- [PostgreSQL License](https://www.postgresql.org/about/licence/): liberal Open Source license, similar to the BSD or MIT licenses. [You can distribute, modify and commercial use](https://www.tldrlegal.com/license/postgresql-license-postgresql).
+- Price per hour comparison on AWS-RDS with db.t3.xlarge (16GB, 4vCPU): $0.60 [oracle](https://aws.amazon.com/rds/oracle/pricing/) vs $0.29 [Postgres](https://aws.amazon.com/rds/postgresql/pricing/)
+- [MVCC](https://www.postgresql.org/docs/7.1/mvcc.html) (Multi-Version Concurrency Control): locks acquired for querying (reading) data don't conflict with locks acquired for writing data. (reading doesn't blocks writing, and writing doesn't blocks reading).
+- For writing: the data is lifted into virtual memory, only when the transaction is complete is the entire change written to disk in one operation.
 ---
 
-[^1]: Data From: https://dados.gov.br/dados/conjuntos-dados/destinacoes-de-mercadorias-apreendidas
+[^1]: Some notes here were not directly found in the book, but the book led me to research about.
 
-[^2]: I would like to thank to [Giovanni](https://giovannipcarvalho.github.io/2023/04/03/postgresql-and-psql-in-docker.html) for the psql script.
+[^2]: Data From: https://dados.gov.br/dados/conjuntos-dados/destinacoes-de-mercadorias-apreendidas
+
+[^3]: I would like to thank to [Giovanni](https://giovannipcarvalho.github.io/2023/04/03/postgresql-and-psql-in-docker.html) for the psql script.
