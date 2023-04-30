@@ -128,6 +128,21 @@ from events;
 - Price per hour comparison on AWS-RDS with db.t3.xlarge (16GB, 4vCPU): $0.60 [oracle](https://aws.amazon.com/rds/oracle/pricing/) vs $0.29 [Postgres](https://aws.amazon.com/rds/postgresql/pricing/)
 - [MVCC](https://www.postgresql.org/docs/7.1/mvcc.html) (Multi-Version Concurrency Control): locks acquired for querying (reading) data don't conflict with locks acquired for writing data. (reading doesn't blocks writing, and writing doesn't blocks reading).
 - For writing: the data is lifted into virtual memory, only when the transaction is complete is the entire change written to disk in one operation.
+
+## Gravity Assist
+
+- You (unfortunately) may add bias to the data (but avoid it)
+- Occam's razor: the simplest explanation is usually the best one
+- The Temporary table is automatically dropped at the end of a session / current transaction `CREATE TEMPORARY TABLE my_temp_table_name`
+
+## Under The Ice
+
+- `explain [analyze] my_query`: shows the execution plan, it is important to check its `cost` and its `scans`
+- The `cost` is a relative measurement (that you may want to minimize).
+- There are several ways to scan a table such as `sequencial scan`, `index scan`, ...
+- `\d my_element` describs a element (table, view, index, ...)
+- In a many-to-many (N:M) relationship, a `junction table` is used to support relationship between two tables. The junction table contains the two foreign keys and creates its own primary key using those two foreign keys.
+
 ---
 
 [^1]: Some notes here were not directly found in the book, but the book led me to research about.
