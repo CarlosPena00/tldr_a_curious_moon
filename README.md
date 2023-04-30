@@ -26,10 +26,10 @@ sh scripts/10_psql.sh < my_sql.sql
 
 ## Transit
 
-- Respect the ETL (extract, transform, load)
+- Respect the ETL (extract, [transform](sql/normalize.sql), load)
 - Before a `create` must have a `drop * if exists [cascade]`
-- Create a schema just for importing the data with text type
-- Put everything in an idempotent script
+- Create a [schema](sql/import.sql) just for importing the data with text type
+- Put everything in an idempotent script (same input same output)
 
 ## In Orbit
 
@@ -37,7 +37,7 @@ sh scripts/10_psql.sh < my_sql.sql
 - Date in Postgres is stored as a UTC
 - TIMESTAMPT: values in UTC
 - TIMESTAMPTZ: converts TIMESTAMP values (UTC) to the client's session time zone
-- make clean && make
+- make clean && [make](Makefile)
 
 ## Flyby
 
