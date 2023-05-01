@@ -137,11 +137,19 @@ from events;
 
 ## Under The Ice
 
-- `explain [analyze] my_query`: shows the execution plan, it is important to check its `cost` and its `scans`
-- The `cost` is a relative measurement (that you may want to minimize).
+- Use `explain [analyze] my_query` to shows the execution plan of a query, it is important to check its `cost` and its `scans`
+- The `cost` is a relative measurement, which you may want to minimize.
 - There are several ways to scan a table such as `sequential scan`, `index scan`, ...
 - `\d my_element` describes a element (table, view, index, ...)
 - In a many-to-many (N:M) relationship, a `junction table` is used to support relationship between two tables. The junction table contains the two foreign keys and creates its own primary key using those two foreign keys.
+- In postgres is possible to index with `where` (e.g.: index where a column is not null), and also `concurrently` (without paying)
+- BTREE index (balanced tree)
+- Also the `tsrange` (timestamp range) in which you define a window (start, end) and inclusive/exclusive options.
+- [Other range options](https://www.postgresql.org/docs/current/rangetypes.html): `int4range`, `numrange`, `daterange` ...
+- [Ranges Types: Your Life Will Never Be The Same ](https://wiki.postgresql.org/images/7/73/Range-types-pgopen-2012.pdf)
+- To query ranges, use `@>` e.g: `SELECT int4range(10, 30) @> 20`, to compute the intersection between two ranges use `*`, and to check if the ranges overlaps, use `&&`
+- Remember to create a new index using GIST (Generalized Search Tree) on the ranges (if you wish)
+- However, if you are using a range to constrain results it may not help (as Dee problem)
 
 ---
 
