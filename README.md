@@ -33,7 +33,7 @@ sh scripts/10_psql.sh < my_sql.sql
 
 ## In Orbit
 
-- Create lookup tables: reduce repetitions and could speedup search. A new table with all distinct values from the given coloumn (of the import.* table), with a primary key (that will be used as foreign key)
+- Create lookup tables: reduce repetitions and could speedup search. A new table with all distinct values from the given column (of the import.* table), with a primary key (that will be used as foreign key)
 - Date in Postgres is stored as a UTC
 - TIMESTAMPT: values in UTC
 - TIMESTAMPTZ: converts TIMESTAMP values (UTC) to the client's session time zone
@@ -41,7 +41,7 @@ sh scripts/10_psql.sh < my_sql.sql
 
 ## Flyby
 
-- A query is `Sargeable`(Search ARGument ABLE) if it can take advantage of an index to speed up the execution of the query
+- A query is `Sargable`(Search ARGument ABLE) if it can take advantage of an index to speed up the execution of the query
 - Avoid `LIKE %*` as it is `non-sargable`
 - `ILIKE` is case-insensitive
 
@@ -105,7 +105,7 @@ $$ language sql;
 
 To other languages, such as python, it is necessary to run `CREATE LANGUAGE [plpython3u]` that requires installing python itself along with Postgres.
 
-- Window function: similar to aggregation without gruping rows `count(1) over (partition by ...)` (you may want to add `distinct` in after the `select`)
+- Window function: similar to aggregation without grouping rows `count(1) over (partition by ...)` (you may want to add `distinct` in after the `select`)
 
 as example, the percentage of entries per year with max/min price per year.
 
@@ -139,8 +139,8 @@ from events;
 
 - `explain [analyze] my_query`: shows the execution plan, it is important to check its `cost` and its `scans`
 - The `cost` is a relative measurement (that you may want to minimize).
-- There are several ways to scan a table such as `sequencial scan`, `index scan`, ...
-- `\d my_element` describs a element (table, view, index, ...)
+- There are several ways to scan a table such as `sequential scan`, `index scan`, ...
+- `\d my_element` describes a element (table, view, index, ...)
 - In a many-to-many (N:M) relationship, a `junction table` is used to support relationship between two tables. The junction table contains the two foreign keys and creates its own primary key using those two foreign keys.
 
 ---
