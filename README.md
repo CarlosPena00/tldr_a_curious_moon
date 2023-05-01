@@ -1,4 +1,4 @@
-# My TL;DR Of A Curious Moon
+# TL;DR Of A Curious Moon
 
 The idea of the repository is to have a streamlined version of the teachings I had per chapter[^1], focused on the Postgres itself. I found it interesting to change the database to avoid a simple copy/paste by myself. I chose a public dataset from the Brazilian government regarding confiscated cigarettes (and destroyed)[^2], that I may (or may not) change in the future.
 
@@ -150,6 +150,11 @@ from events;
 - To query ranges, use `@>` e.g: `SELECT int4range(10, 30) @> 20`, to compute the intersection between two ranges use `*`, and to check if the ranges overlaps, use `&&`
 - Remember to create a new index using GIST (Generalized Search Tree) on the ranges (if you wish)
 - However, if you are using a range to constrain results it may not help (as Dee problem)
+
+## Glide Path and Epilog
+- Time for plot
+- Overall, I loved this book! I never thought a tutorial could be so well done
+- Please, feel free to contribute to more lessons :D
 
 ---
 
