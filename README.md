@@ -34,8 +34,8 @@ sh scripts/10_psql.sh < my_sql.sql
 ## In Orbit
 
 - Create lookup tables: reduce repetitions and could speedup search. A new table with all distinct values from the given column (of the import.* table), with a primary key (that will be used as foreign key)
-- Date in Postgres is stored as a UTC
-- TIMESTAMPT: values in UTC
+- Date in Postgres is stored as UTC
+- TIMESTAMP: values in UTC
 - TIMESTAMPTZ: converts TIMESTAMP values (UTC) to the client's session time zone
 - make clean && [make](Makefile)
 
@@ -64,7 +64,7 @@ sh scripts/10_psql.sh < my_sql.sql
   - csvcut -n: print column names
   - csvsql: import into PostgreSQL (remember to replace varchar to text)
 
-> csvsql my_csv_path -i postgresql --tables "import.my_name" --noconstraints –overwrite | sed 's/VARCHAR/text/g' > import.sql
+> csvsql my_csv_path -i postgresql --tables "import.my_name" --noconstraints --overwrite | sed 's/VARCHAR/text/g' > import.sql
 
 - Using `cut` command to retrieve the desired columns: `cut -d ';' -f 1-2,4-6  user_data/cigarros.csv`
 - CTE (Common Table Expression): `with temp_table_name as ( select ...), other_name as (select ... where temp_table_name.x = 2) select * from other_name`
@@ -99,7 +99,7 @@ drop function if exists max_price_per_region(int);
 create function max_price_per_region(rid int, out numeric)
 as $$
     select max(price) from events where events.region_id=rid
-    -- implicity return the first row of this select
+    -- implicitly return the first row of this select
 $$ language sql;
 ```
 
@@ -107,7 +107,7 @@ To other languages, such as python, it is necessary to run `CREATE LANGUAGE [plp
 
 - Window function: similar to aggregation without grouping rows `count(1) over (partition by ...)` (you may want to add `distinct` in after the `select`)
 
-as example, the percentage of entries per year with max/min price per year.
+For example, the percentage of entries per year with max/min price per year.
 
 ```sql
 select distinct
@@ -140,9 +140,9 @@ from events;
 - Use `explain [analyze] my_query` to shows the execution plan of a query, it is important to check its `cost` and its `scans`
 - The `cost` is a relative measurement, which you may want to minimize.
 - There are several ways to scan a table such as `sequential scan`, `index scan`, ...
-- `\d my_element` describes a element (table, view, index, ...)
+- `\d my_element` describes an element (table, view, index, ...)
 - In a many-to-many (N:M) relationship, a `junction table` is used to support relationship between two tables. The junction table contains the two foreign keys and creates its own primary key using those two foreign keys.
-- In postgres is possible to index with `where` (e.g.: index where a column is not null), and also `concurrently` (without paying)
+- In Postgres it is possible to index with `where` (e.g.: index where a column is not null), and also `concurrently` (without locking)
 - BTREE index (balanced tree)
 - Also the `tsrange` (timestamp range) in which you define a window (start, end) and inclusive/exclusive options.
 - [Other range options](https://www.postgresql.org/docs/current/rangetypes.html): `int4range`, `numrange`, `daterange` ...
